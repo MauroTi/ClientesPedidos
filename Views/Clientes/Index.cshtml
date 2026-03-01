@@ -1,14 +1,14 @@
-﻿@model List<ClientesPedidos.Models.PedidoModel>
+﻿@model List<ClientesPedidos.Models.ClienteModel>
 
 @{
-    ViewData["Title"] = "Pedidos";
+    ViewData["Title"] = "Clientes";
 }
 
-<h2>Pedidos</h2>
+<h2>Clientes</h2>
 
 <hr />
 
-<h4>Novo Pedido</h4>
+<h4>Novo Cliente</h4>
 
 <form asp-action="Criar" method="post">
     <div>
@@ -17,8 +17,8 @@
     </div>
 
     <div>
-        <label>Tipo:</label>
-        <input type="text" name="tipo" required />
+        <label>Telefone:</label>
+        <input type="text" name="telefone" required />
     </div>
 
     <br />
@@ -27,32 +27,30 @@
 
 <hr />
 
-<h4>Lista de Pedidos</h4>
+<h4>Lista de Clientes</h4>
 
 <table border="1" cellpadding="5">
     <thead>
         <tr>
             <th>ID</th>
             <th>Nome</th>
-            <th>Tipo</th>
-            
+            <th>Telefone</th>
+           
         </tr>
     </thead>
     <tbody>
-        @if(Model != null){
-        foreach (var pedido in Model)
-        {            
+        @foreach (var cliente in Model)
+        {
             <tr>
-                <td>@pedido.id</td>
-                <td>@pedido.nome</td>
-                <td>@pedido.tipo</td>
+                <td>@cliente.id</td>
+                <td>@cliente.nome</td>
+                <td>@cliente.telefone</td>
                 <td>
-                    <a asp-action="Deletar" asp-route-id="@pedido.id">
+                    <a asp-action="Deletar" asp-route-id="@cliente.id">
                         Excluir
                     </a>
                 </td>
             </tr>
-         }
         }
     </tbody>
 </table>
