@@ -1,58 +1,28 @@
-﻿@model List<ClientesPedidos.Models.PedidoModel>
-
-@{
-    ViewData["Title"] = "Pedidos";
+﻿@{
+    ViewData["Title"] = "Página Inicial";
 }
 
-<h2>Pedidos</h2>
+<div class="dashboard-container">
 
-<hr />
+    <div class="dashboard-content">
+        <h1>Bem-vindo ao sistema de Clientes e Pedidos.</h1>
+       
 
-<h4>Novo Pedido</h4>
+        <div class="cards">
 
-<form asp-action="Criar" method="post">
-    <div>
-        <label>Nome:</label>
-        <input type="text" name="nome" required />
+            <div class="card">
+                <h3>Clientes</h3>
+                <p>Gerencie os clientes cadastrados.</p>
+                <a asp-controller="Clientes" asp-action="Index" class="btn btn-acessar">Acessar</a>
+            </div>
+
+            <div class="card">
+                <h3>Pedidos</h3>
+                <p>Gerencie os pedidos realizados.</p>
+                <a asp-controller="Pedidos" asp-action="Index" class="btn btn-acessar">Acessar</a>
+            </div>
+
+        </div>
     </div>
 
-    <div>
-        <label>Tipo:</label>
-        <input type="text" name="tipo" required />
-    </div>
-
-    <br />
-    <button type="submit">Adicionar</button>
-</form>
-
-<hr />
-
-<h4>Lista de Pedidos</h4>
-
-<table border="1" cellpadding="5">
-    <thead>
-        <tr>
-            <th>ID</th>
-            <th>Nome</th>
-            <th>Tipo</th>
-            
-        </tr>
-    </thead>
-    <tbody>
-        @if(Model != null){
-        foreach (var pedido in Model)
-        {            
-            <tr>
-                <td>@pedido.id</td>
-                <td>@pedido.nome</td>
-                <td>@pedido.tipo</td>
-                <td>
-                    <a asp-action="Deletar" asp-route-id="@pedido.id">
-                        Excluir
-                    </a>
-                </td>
-            </tr>
-         }
-        }
-    </tbody>
-</table>
+</div>

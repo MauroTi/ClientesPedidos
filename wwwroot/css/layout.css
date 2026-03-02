@@ -1,0 +1,84 @@
+﻿/* ===== FUNDO GERAL ===== */
+body {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background: linear-gradient(135deg, #0f2e1c, #123524);
+    color: #f1f5f3;
+}
+
+/* ===== WRAPPER ===== */
+.admin-wrapper {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* ===== SIDEBAR ===== */
+.sidebar {
+    width: 220px;
+    background-color: #0d2618;
+    padding: 30px 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+.logo {
+    color: #9be7c4;
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.logo-link {
+    color: #9be7c4;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 50px;
+}
+
+    .logo-link:hover {
+        color: #1e8449;
+    }
+
+.sidebar nav a,
+.sidebar nav a:visited {
+    color: #c8f7e5;
+    text-decoration: none;
+}
+
+    .sidebar nav a:hover {
+        background-color: #1e8449;
+        color: #ffffff;
+    }
+
+.logo h1 {
+    margin: 0;
+    font-size: 20px; /* ajuste se quiser */
+    font-weight: bold;
+}
+
+.sidebar nav a {
+    color: #c8f7e5;
+    text-decoration: none;
+    padding: 12px;
+    border-radius: 6px;
+    margin-bottom: 10px;
+    display: block;
+    transition: 0.3s;
+}
+
+    .sidebar nav a:hover {
+        background-color: #1e8449;
+    }
+
+/* ===== CONTEÚDO CENTRALIZADO ===== */
+.main-content {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    padding: 40px;
+}
+
+/* ===== CONTAINER PADRÃO DE PÁGINA ===== */
+.page-container {
+    width: 100%;
+    max-width: 900px;
+}

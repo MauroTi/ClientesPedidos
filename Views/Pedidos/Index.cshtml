@@ -1,21 +1,21 @@
-﻿@model List<ClientesPedidos.Models.ClienteModel>
+﻿@model List<ClientesPedidos.Models.PedidoModel>
 @using System.Linq
 
 @{
-    ViewData["Title"] = "Clientes";
+    ViewData["Title"] = "Pedidos";
 }
 
 @section Styles {
-    <link rel="stylesheet" href="~/css/pages/clientes.css" />
+    <link rel="stylesheet" href="~/css/pages/pedidos.css" />
 }
 
 <div class="page-container">
 
-    <h1 class="page-title">Clientes</h1>
+    <h1 class="page-title">Pedidos</h1>
 
     <div class="card form-section">
 
-        <h4>Novo Cliente</h4>
+        <h4>Novo Pedido</h4>
 
         <form asp-action="Criar" method="post">
             @Html.AntiForgeryToken()
@@ -23,8 +23,8 @@
             <label>Nome</label>
             <input type="text" name="nome" required />
 
-            <label>Telefone</label>
-            <input type="text" name="telefone" required />
+            <label>Tipo</label>
+            <input type="text" name="tipo" required />
 
             <button type="submit">Adicionar</button>
         </form>
@@ -33,14 +33,14 @@
 
     <div class="card">
 
-        <h4>Lista de Clientes</h4>
+        <h4>Lista de Pedidos</h4>
 
         <table>
             <thead>
                 <tr>
                     <th>ID</th>
                     <th>Nome</th>
-                    <th>Telefone</th>
+                    <th>Tipo</th>
                     <th>Ações</th>
                 </tr>
             </thead>
@@ -48,16 +48,16 @@
             <tbody>
                 @if (Model != null && Model.Any())
                 {
-                    foreach (var cliente in Model)
+                    foreach (var pedido in Model)
                     {
                         <tr>
-                            <td>@cliente.id</td>
-                            <td>@cliente.nome</td>
-                            <td>@cliente.telefone</td>
+                            <td>@pedido.id</td>
+                            <td>@pedido.nome</td>
+                            <td>@pedido.tipo</td>
                             <td>
                                 <form asp-action="Deletar"
                                       method="post"
-                                      asp-route-id="@cliente.id">
+                                      asp-route-id="@pedido.id">
                                     @Html.AntiForgeryToken()
                                     <button type="submit" class="btn-delete">
                                         Excluir
@@ -71,7 +71,7 @@
                 {
                     <tr>
                         <td colspan="4" class="empty-message">
-                            Nenhum cliente cadastrado.
+                            Nenhum pedido cadastrado.
                         </td>
                     </tr>
                 }

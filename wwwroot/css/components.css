@@ -1,0 +1,108 @@
+﻿/* ===== CARD ===== */
+.card {
+    background-color: #173d2a;
+    padding: 30px;
+    border-radius: 14px;
+    box-shadow: 0 12px 30px rgba(0,0,0,0.45);
+    margin-bottom: 30px;
+    color: #f1f5f3;
+}
+
+    .card h4 {
+        margin-top: 0;
+        margin-bottom: 20px;
+        color: #9be7c4;
+    }
+
+/* ===== FORM ===== */
+label {
+    display: block;
+    margin-bottom: 6px;
+    color: #d7f3e5;
+    font-size: 14px;
+}
+
+input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 18px;
+    border-radius: 8px;
+    border: none;
+    background-color: #244a38;
+    color: #ffffff;
+    font-size: 14px;
+}
+
+    input:focus {
+        outline: none;
+        box-shadow: 0 0 8px #2ecc71;
+    }
+
+/* ===== BOTÕES ===== */
+button {
+    padding: 10px 20px;
+    border-radius: 8px;
+    border: none;
+    background-color: #1e8449;
+    color: #ffffff;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+    button:hover {
+        background-color: #27ae60;
+    }
+
+/* ===== TABELA ===== */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #1f4b34;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+thead {
+    background-color: #1e8449;
+}
+
+th {
+    padding: 14px;
+    color: #ffffff;
+    font-weight: 600;
+}
+
+td {
+    padding: 14px;
+    color: #e8f5ef; /* letras claras */
+}
+
+tbody tr {
+    border-bottom: 1px solid #173d2a;
+}
+
+    tbody tr:hover {
+        background-color: #295c44;
+    }
+
+/* ===== LINK EXCLUIR ===== */
+.btn-delete {
+    color: #ff7675;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+    .btn-delete:hover {
+        color: #ff4d4d;
+    }
+
+/*===== BTN ACESSAR =====*/
+
+.btn.btn-acessar {
+    color: #9be7c4 !important;
+}
+
+    .btn.btn-acessar:hover {
+        color: #fff !important;
+    }
