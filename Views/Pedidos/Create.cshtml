@@ -1,0 +1,21 @@
+﻿@model ClientesPedidos.ViewModels.PedidoCreateViewModel
+@using Microsoft.AspNetCore.Mvc.Rendering
+
+<form asp-action="Create" method="post">
+    @Html.AntiForgeryToken()
+
+    <label>Cliente</label>
+    <select asp-for="ClienteId"
+            asp-items="@(new SelectList(Model.Clientes, "id", "nome"))"
+            class="form-control">
+        <option value="">Selecione</option>
+    </select>
+
+    <label>Descrição</label>
+    <input asp-for="Descricao" class="form-control" />
+
+    <label>Valor</label>
+    <input asp-for="Valor" class="form-control" />
+
+    <button type="submit" class="btn-save">Salvar</button>
+</form>
