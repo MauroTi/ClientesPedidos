@@ -51,13 +51,13 @@
                     foreach (var cliente in Model)
                     {
                         <tr>
-                            <td>@cliente.id</td>
-                            <td>@cliente.nome</td>
-                            <td>@cliente.telefone</td>
+                            <td>@cliente.Id</td>
+                            <td>@cliente.Nome</td>
+                            <td>@cliente.Telefone</td>
                             <td>
                                 <form asp-action="Deletar"
                                       method="post"
-                                      asp-route-id="@cliente.id">
+                                      asp-route-id="@cliente.Id">
                                     @Html.AntiForgeryToken()
                                     <button type="submit" class="btn-delete">
                                         Excluir

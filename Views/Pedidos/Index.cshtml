@@ -15,27 +15,11 @@
 
     <div class="card form-section">
 
-        <h4>Novo Pedido</h4>
+        <h4>Gerenciar Pedidos</h4>
 
-        <form asp-action="Create" method="post">
-            @Html.AntiForgeryToken()
-
-            <label>Cliente</label>
-            <select name="ClienteId" class="form-control">
-                <option value="">Selecione</option>
-                @foreach (var c in (ViewBag.Clientes ?? new List<SelectListItem>()))
-                {
-                    <option value="@c.Value">@c.Text</option>
-                }
-            </select>
-
-            <label>Descrição</label>
-            <input type="text" name="Descricao" class="form-control" required />
-
-            <label>Valor</label>
-            <input type="number" step="0.01" name="Valor" class="form-control" required />
-
-            <button type="submit">Adicionar</button>
+        <!-- Botão para criar novo pedido -->
+        <form asp-action="Create" method="get">
+            <button type="submit">Novo Pedido</button>
         </form>
 
     </div>
@@ -47,7 +31,6 @@
         <table>
             <thead>
                 <tr>
-                    <th>ID</th>
                     <th>Cliente</th>
                     <th>Descrição</th>
                     <th>Valor</th>
@@ -62,17 +45,26 @@
                     foreach (var pedido in Model)
                     {
                         <tr>
-                            <td>@pedido.Id</td>
                             <td>@pedido.NomeCliente</td>
                             <td>@pedido.Descricao</td>
                             <td>@pedido.Valor</td>
                             <td>@pedido.DataPedido.ToString("dd/MM/yyyy")</td>
                             <td>
-                                <form asp-action="Deletar"
+                                <form asp-action="Edit"
+                                      method="get"
+                                      asp-route-id="@pedido.Id"
+                                      style="display:inline">
+                                    <button type="submit" class="btn-edit">
+                                        Editar
+                                    </button>
+                                </form>
+
+                                <form asp-action="Delete"
                                       method="post"
-                                      asp-route-id="@pedido.Id">
+                                      asp-route-id="@pedido.Id"
+                                      style="display:inline">
                                     @Html.AntiForgeryToken()
-                                    <button type="submit" class="btn-delete">
+                                    <button type="submit" class="btn-edit">
                                         Excluir
                                     </button>
                                 </form>
@@ -83,12 +75,11 @@
                 else
                 {
                     <tr>
-                        <td colspan="6" class="empty-message">
+                        <td colspan="5" class="empty-message">
                             Nenhum pedido cadastrado.
                         </td>
                     </tr>
                 }
-
             </tbody>
         </table>
 

@@ -1,11 +1,14 @@
 ﻿@model ClientesPedidos.ViewModels.PedidoCreateViewModel
 @using Microsoft.AspNetCore.Mvc.Rendering
 
-<form asp-action="Create" method="post">
+@{
+    ViewData["Title"] = "Editar Pedido";
+}
+
+<form asp-action="Edit" method="post">
     @Html.AntiForgeryToken()
 
     <label>Cliente</label>
-    <p>Total clientes: @Model.Clientes?.Count</p>
     <select asp-for="ClienteId"
             asp-items="@(new SelectList(Model.Clientes, "Id", "Nome"))"
             class="form-control">
@@ -16,7 +19,7 @@
     <input asp-for="Descricao" class="form-control" />
 
     <label>Valor</label>
-    <input asp-for="Valor" class="form-control" />
+    <input asp-for="Valor" type="number" step="0.01" class="form-control" />
 
-    <button type="submit" class="btn-save">Salvar</button>
+    <button type="submit">Salvar Alterações</button>
 </form>

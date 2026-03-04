@@ -9,6 +9,7 @@ builder.Services.AddSingleton<Conexao>();
 builder.Services.AddScoped<PedidosDAO>();
 builder.Services.AddScoped<ClientesDAO>();
 
+
 var app = builder.Build();
 
 // Configure pipeline

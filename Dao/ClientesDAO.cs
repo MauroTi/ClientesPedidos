@@ -104,9 +104,9 @@ namespace ClientesPedidos.Dao
             {
                 lista.Add(new ClienteModel
                 {
-                    id = Convert.ToInt32(reader["id"]),
-                    nome = reader["nome"]?.ToString() ?? string.Empty,
-                    telefone = reader["telefone"]?.ToString() ?? string.Empty
+                    Id = Convert.ToInt32(reader["id"]),
+                    Nome = reader["nome"]?.ToString() ?? string.Empty,
+                    Telefone = reader["telefone"]?.ToString() ?? string.Empty
                 });
             }
 

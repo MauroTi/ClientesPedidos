@@ -1,30 +1,29 @@
-﻿using ClientesPedidos.Dao;
-using ClientesPedidos.Models;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using Microsoft.AspNetCore.Mvc;
+using ClientesPedidos.Dao;
 using ClientesPedidos.ViewModels;
+using ClientesPedidos.Models;
 
 namespace ClientesPedidos.Controllers
 {
     public class PedidosController : Controller
     {
-        private readonly PedidosDAO _dao;
         private readonly ClientesDAO _clientesDao;
+        private readonly PedidosDAO _pedidosDao;
 
-        public PedidosController(PedidosDAO dao, ClientesDAO clientesDao)
+        public PedidosController(ClientesDAO clientesDao, PedidosDAO pedidosDao)
         {
-            _dao = dao;
             _clientesDao = clientesDao;
+            _pedidosDao = pedidosDao;
         }
 
         // LISTAGEM
         public IActionResult Index()
         {
-            var lista = _dao.GetPedidos();
-            return View(lista);
+            var pedidos = _pedidosDao.GetPedidos();
+            return View(pedidos);
         }
 
-        // FORMULÁRIO DE CRIAÇÃO
+        // CREATE (GET)
         public IActionResult Create()
         {
             var model = new PedidoCreateViewModel
@@ -35,7 +34,7 @@ namespace ClientesPedidos.Controllers
             return View(model);
         }
 
-        // SALVAR NOVO PEDIDO
+        // CREATE (POST)
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Create(PedidoCreateViewModel model)
@@ -54,18 +53,74 @@ namespace ClientesPedidos.Controllers
                 DataPedido = DateTime.Now
             };
 
-            _dao.AddPedido(pedido);
+            bool sucesso = _pedidosDao.AddPedido(pedido);
 
-            return RedirectToAction("Index");
+            if (sucesso)
+                return RedirectToAction(nameof(Index));
+
+            ModelState.AddModelError("", "Erro ao salvar pedido.");
+            model.Clientes = _clientesDao.Listar();
+            return View(model);
         }
 
-        // DELETAR
+        // EDIT (GET)
+        public IActionResult Edit(int id)
+        {
+            var pedido = _pedidosDao.GetPedidos()
+                .FirstOrDefault(p => p.Id == id);
+
+            if (pedido == null)
+                return NotFound();
+
+            var model = new PedidoCreateViewModel
+            {
+                ClienteId = pedido.ClienteId,
+                Descricao = pedido.Descricao,
+                Valor = pedido.Valor,
+                Clientes = _clientesDao.Listar()
+            };
+
+            return View(model);
+        }
+
+        // EDIT (POST)
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Deletar(int id)
+        public IActionResult Edit(int id, PedidoCreateViewModel model)
         {
-            _dao.DeletePedido(id);
-            return RedirectToAction("Index");
+            if (!ModelState.IsValid)
+            {
+                model.Clientes = _clientesDao.Listar();
+                return View(model);
+            }
+
+            var pedido = new PedidoModel
+            {
+                Id = id,
+                ClienteId = model.ClienteId,
+                Descricao = model.Descricao,
+                Valor = model.Valor
+            };
+
+            bool sucesso = _pedidosDao.UpdatePedido(pedido);
+
+            if (sucesso)
+                return RedirectToAction(nameof(Index));
+
+            ModelState.AddModelError("", "Erro ao atualizar pedido.");
+            model.Clientes = _clientesDao.Listar();
+            return View(model);
+        }
+
+        // DELETE
+        public IActionResult Delete(int id)
+        {
+            bool sucesso = _pedidosDao.DeletePedido(id);
+
+            if (!sucesso)
+                ModelState.AddModelError("", "Erro ao excluir pedido.");
+
+            return RedirectToAction(nameof(Index));
         }
     }
 }
