@@ -1,0 +1,90 @@
+﻿<div style="width:300px; margin:0 auto; text-align:center;">
+
+    <h2>Dashboard de Pedidos</h2>
+
+    <div style="display:flex; gap:20px; justify-content:flex-start;">
+        <canvas id="graficoLinha" style="width:170px; height:150px; margin-right: 50px"></canvas>
+        <canvas id="graficoPizza" style="width:240px; height:150px;"></canvas>
+    </div>
+
+</div>
+
+<br>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<br>
+
+<div style="width:150px; height:150px;">
+    <canvas id="graficoPizza" style="width:150px; height:150px;"></canvas>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+
+    async function carregarGraficoPedidos() {
+
+        const resposta = await fetch('/Pedidos/PedidosPorDia');
+
+        const dados = await resposta.json();
+
+        const labels = Object.keys(dados);
+        const valores = Object.values(dados);
+
+        const ctx = document.getElementById('graficoLinha');
+
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Pedidos por Dia',
+                    data: valores,
+                    borderWidth: 3,
+                    tension: 0.2
+                }]
+            }
+        });
+
+    }
+
+    carregarGraficoPedidos();
+
+</script>
+
+<script>
+
+    async function carregarGraficoPizza(){
+
+        const resposta = await fetch('/Pedidos/PedidosResumoPeriodo');
+
+        const dados = await resposta.json();
+
+        const labels = Object.keys(dados);
+        const valores = Object.values(dados);
+
+        const ctx = document.getElementById('graficoPizza');
+
+        new Chart(ctx,{
+            type:'pie',
+            data:{
+                labels: labels,
+                datasets:[{
+                    label:'Pedidos por período',
+                    data: valores,
+                    backgroundColor:[
+                        '#36A2EB',
+                        '#FF6384',
+                        '#FFCE56',
+                        '#4BC0C0'
+                    ]
+                }]
+            }
+        });
+
+    }
+
+    carregarGraficoPizza();
+
+</script>

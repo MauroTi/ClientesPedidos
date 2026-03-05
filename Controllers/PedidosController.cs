@@ -3,6 +3,7 @@ using ClientesPedidos.Dao;
 using ClientesPedidos.ViewModels;
 using ClientesPedidos.Models;
 
+
 namespace ClientesPedidos.Controllers
 {
     public class PedidosController : Controller
@@ -14,6 +15,14 @@ namespace ClientesPedidos.Controllers
         {
             _clientesDao = clientesDao;
             _pedidosDao = pedidosDao;
+        }
+
+        [HttpGet]
+        public JsonResult PedidosPorDia()
+        {
+            var dados = _pedidosDao.PedidosPorDia();
+
+            return Json(dados);
         }
 
         // LISTAGEM
@@ -110,6 +119,14 @@ namespace ClientesPedidos.Controllers
             ModelState.AddModelError("", "Erro ao atualizar pedido.");
             model.Clientes = _clientesDao.Listar();
             return View(model);
+        }
+
+        [HttpGet]
+        public JsonResult PedidosResumoPeriodo()
+        {
+            var dados = _pedidosDao.PedidosResumoPeriodo();
+
+            return Json(dados);
         }
 
         // DELETE

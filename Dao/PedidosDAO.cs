@@ -1,5 +1,7 @@
 ﻿using MySql.Data.MySqlClient;
+using System;
 using System.Collections.Generic;
+using Microsoft.Extensions.Configuration;
 using ClientesPedidos.Models;
 
 
@@ -100,6 +102,66 @@ namespace ClientesPedidos.Dao
             cmd.Parameters.AddWithValue("@Id", id);
 
             return cmd.ExecuteNonQuery() > 0;
+        }
+
+        public Dictionary<string, int> PedidosPorDia()
+        {
+            var dados = new Dictionary<string, int>();
+
+            using var conn = new MySqlConnection(_connectionString);
+            conn.Open();
+
+            string sql = @"
+        SELECT DATE(DataPedido) as Dia,
+               COUNT(*) as Total
+        FROM Pedidos
+        GROUP BY DATE(DataPedido)
+        ORDER BY Dia;";
+
+            using var cmd = new MySqlCommand(sql, conn);
+
+            using var reader = cmd.ExecuteReader();
+
+            while (reader.Read())
+            {
+                string dia = reader.GetDateTime("Dia").ToString("yyyy-MM-dd");
+                int total = reader.GetInt32("Total");
+
+                dados.Add(dia, total);
+            }
+
+            return dados;
+        }
+
+        public Dictionary<string, int> PedidosResumoPeriodo()
+        {
+            var dados = new Dictionary<string, int>();
+
+            using var conn = new MySqlConnection(_connectionString);
+            conn.Open();
+
+            string sql = @"
+        SELECT
+            SUM(CASE WHEN DATE(DataPedido) = CURDATE() THEN 1 ELSE 0 END) AS Hoje,
+            SUM(CASE WHEN YEARWEEK(DataPedido,1) = YEARWEEK(CURDATE(),1) THEN 1 ELSE 0 END) AS Semana,
+            SUM(CASE WHEN MONTH(DataPedido) = MONTH(CURDATE()) 
+                     AND YEAR(DataPedido) = YEAR(CURDATE()) THEN 1 ELSE 0 END) AS Mes,
+            SUM(CASE WHEN YEAR(DataPedido) = YEAR(CURDATE()) THEN 1 ELSE 0 END) AS Ano
+        FROM pedidos;
+    ";
+
+            using var cmd = new MySqlCommand(sql, conn);
+            using var reader = cmd.ExecuteReader();
+
+            if (reader.Read())
+            {
+                dados.Add("Hoje", reader.GetInt32("Hoje"));
+                dados.Add("Semana", reader.GetInt32("Semana"));
+                dados.Add("Mes", reader.GetInt32("Mes"));
+                dados.Add("Ano", reader.GetInt32("Ano"));
+            }
+
+            return dados;
         }
     }
 }

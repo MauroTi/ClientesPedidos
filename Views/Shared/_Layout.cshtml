@@ -35,6 +35,12 @@
             <nav>
                 <a asp-controller="Clientes" asp-action="Index">Clientes</a>
                 <a asp-controller="Pedidos" asp-action="Index">Pedidos</a>
+
+                @if (!(ViewContext.RouteData.Values["controller"]?.ToString() == "Graficos" &&
+                                ViewContext.RouteData.Values["action"]?.ToString() == "Index"))
+                {
+                    <a asp-controller="Graficos" asp-action="Index">Gráficos</a>
+                }
             </nav>
         </aside>
 
