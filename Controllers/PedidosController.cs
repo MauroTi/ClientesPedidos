@@ -2,7 +2,8 @@
 using ClientesPedidos.Dao;
 using ClientesPedidos.ViewModels;
 using ClientesPedidos.Models;
-
+using System.Collections.Generic;
+using System;
 
 namespace ClientesPedidos.Controllers
 {
@@ -20,37 +21,33 @@ namespace ClientesPedidos.Controllers
         [HttpGet]
         public JsonResult PedidosPorDia()
         {
-            var dados = _pedidosDao.PedidosPorDia();
-
+            var dados = _pedidosDao.PedidosPorDia() ?? new Dictionary<string, int>();
             return Json(dados);
         }
 
-        // LISTAGEM
         public IActionResult Index()
         {
             var pedidos = _pedidosDao.GetPedidos();
             return View(pedidos);
         }
 
-        // CREATE (GET)
         public IActionResult Create()
         {
             var model = new PedidoCreateViewModel
             {
-                Clientes = _clientesDao.Listar()
+                Clientes = _clientesDao.Listar() ?? new List<ClienteModel>()
             };
 
             return View(model);
         }
 
-        // CREATE (POST)
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Create(PedidoCreateViewModel model)
         {
             if (!ModelState.IsValid)
             {
-                model.Clientes = _clientesDao.Listar();
+                model.Clientes = _clientesDao.Listar() ?? new List<ClienteModel>();
                 return View(model);
             }
 
@@ -68,44 +65,45 @@ namespace ClientesPedidos.Controllers
                 return RedirectToAction(nameof(Index));
 
             ModelState.AddModelError("", "Erro ao salvar pedido.");
-            model.Clientes = _clientesDao.Listar();
+            model.Clientes = _clientesDao.Listar() ?? new List<ClienteModel>();
             return View(model);
         }
 
-        // EDIT (GET)
         public IActionResult Edit(int id)
         {
-            var pedido = _pedidosDao.GetPedidos()
-                .FirstOrDefault(p => p.Id == id);
+            var pedido = _pedidosDao.GetPedidoById(id);
 
             if (pedido == null)
                 return NotFound();
 
             var model = new PedidoCreateViewModel
             {
+                Id = pedido.Id,
                 ClienteId = pedido.ClienteId,
-                Descricao = pedido.Descricao,
-                Valor = pedido.Valor,
-                Clientes = _clientesDao.Listar()
+                Descricao = pedido.Descricao ?? string.Empty,
+                Valor = pedido.Valor ?? 0,
+                Clientes = _clientesDao.Listar() ?? new List<ClienteModel>()
             };
 
             return View(model);
         }
 
-        // EDIT (POST)
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(int id, PedidoCreateViewModel model)
+        public IActionResult Edit(PedidoCreateViewModel model)
         {
+            if (model == null)
+                return BadRequest();
+
             if (!ModelState.IsValid)
             {
-                model.Clientes = _clientesDao.Listar();
+                model.Clientes = _clientesDao.Listar() ?? new List<ClienteModel>();
                 return View(model);
             }
 
             var pedido = new PedidoModel
             {
-                Id = id,
+                Id = model.Id,
                 ClienteId = model.ClienteId,
                 Descricao = model.Descricao,
                 Valor = model.Valor
@@ -117,27 +115,29 @@ namespace ClientesPedidos.Controllers
                 return RedirectToAction(nameof(Index));
 
             ModelState.AddModelError("", "Erro ao atualizar pedido.");
-            model.Clientes = _clientesDao.Listar();
+            model.Clientes = _clientesDao.Listar() ?? new List<ClienteModel>();
             return View(model);
         }
 
-        [HttpGet]
-        public JsonResult PedidosResumoPeriodo()
-        {
-            var dados = _pedidosDao.PedidosResumoPeriodo();
-
-            return Json(dados);
-        }
-
-        // DELETE
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult Delete(int id)
         {
             bool sucesso = _pedidosDao.DeletePedido(id);
 
             if (!sucesso)
-                ModelState.AddModelError("", "Erro ao excluir pedido.");
+            {
+                TempData["Erro"] = "Não foi possível excluir o pedido.";
+            }
 
             return RedirectToAction(nameof(Index));
+        }
+
+        [HttpGet]
+        public JsonResult PedidosResumoPeriodo()
+        {
+            var dados = _pedidosDao.PedidosResumoPeriodo() ?? new Dictionary<string, int>();
+            return Json(dados);
         }
     }
 }

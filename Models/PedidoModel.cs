@@ -8,7 +8,7 @@
         public decimal? Valor { get; set; }      // corresponde a `Valor`
         public DateTime DataPedido { get; set; } // corresponde a `DataPedido`
 
-        public List<ClienteModel> Clientes { get; set; } = new();
+        public List<ClienteModel> Clientes { get; } = new();
 
         // opcional para facilitar a View
         public string? NomeCliente { get; set; } // para exibir na tabela com JOIN

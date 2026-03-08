@@ -1,4 +1,4 @@
-namespace ClientesPedidos.Models
+namespace ClientesPedidos.ViewModels
 {
     public class ErrorViewModel
     {

@@ -1,88 +1,40 @@
-﻿@model List<ClientesPedidos.Models.PedidoListViewModel>
-@using System.Linq
+﻿@model IEnumerable<ClientesPedidos.ViewModels.PedidoListViewModel>
 
 @{
     ViewData["Title"] = "Pedidos";
 }
 
-@section Styles {
-    <link rel="stylesheet" href="~/css/pages/pedidos.css" />
-}
+<h2>Pedidos</h2>
 
-<div class="page-container">
+<a asp-action="Create" class="btn btn-success">Novo Pedido</a>
 
-    <h1 class="page-title">Pedidos</h1>
-
-    <div class="card form-section">
-
-        <h4>Gerenciar Pedidos</h4>
-
-        <!-- Botão para criar novo pedido -->
-        <form asp-action="Create" method="get">
-            <button type="submit">Novo Pedido</button>
-        </form>
-
-    </div>
-
-    <div class="card">
-
-        <h4>Lista de Pedidos</h4>
-
-        <table>
-            <thead>
-                <tr>
-                    <th>Cliente</th>
-                    <th>Descrição</th>
-                    <th>Valor</th>
-                    <th>Data</th>
-                    <th>Ações</th>
-                </tr>
-            </thead>
-
-            <tbody>
-                @if (Model != null && Model.Any())
-                {
-                    foreach (var pedido in Model)
-                    {
-                        <tr>
-                            <td>@pedido.NomeCliente</td>
-                            <td>@pedido.Descricao</td>
-                            <td>@pedido.Valor</td>
-                            <td>@pedido.DataPedido.ToString("dd/MM/yyyy")</td>
-                            <td>
-                                <form asp-action="Edit"
-                                      method="get"
-                                      asp-route-id="@pedido.Id"
-                                      style="display:inline">
-                                    <button type="submit" class="btn-edit">
-                                        Editar
-                                    </button>
-                                </form>
-
-                                <form asp-action="Delete"
-                                      method="post"
-                                      asp-route-id="@pedido.Id"
-                                      style="display:inline">
-                                    @Html.AntiForgeryToken()
-                                    <button type="submit" class="btn-edit">
-                                        Excluir
-                                    </button>
-                                </form>
-                            </td>
-                        </tr>
-                    }
-                }
-                else
-                {
-                    <tr>
-                        <td colspan="5" class="empty-message">
-                            Nenhum pedido cadastrado.
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-
-    </div>
-
-</div>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Cliente</th>
+            <th>Descrição</th>
+            <th>Valor</th>
+            <th>Data</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.NomeCliente</td>
+                <td>@item.Descricao</td>
+                <td>@item.Valor</td>
+                <td>@item.DataPedido.ToString("dd/MM/yyyy")</td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Editar</a> |
+                    <form asp-action="Delete" method="post" style="display:inline">
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" name="id" value="@item.Id" />
+                        <button type="submit" class="btn btn-link">Excluir</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
