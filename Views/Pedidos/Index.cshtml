@@ -4,37 +4,45 @@
     ViewData["Title"] = "Pedidos";
 }
 
-<h2>Pedidos</h2>
+<div class="page-container">
+    <!-- Card verde escuro -->
+    <div class="card rounded shadow-sm p-4" style="background-color: #123524; color:#cfe8d5;">
+        <div class="card form-section">
+            <h1 class="fw-bold mb-0">Pedidos</h1>
+            <a asp-action="Create" class="btn btn-success btn-sm" style="margin-top: 10px">Novo Pedido</a>
+        </div>
 
-<a asp-action="Create" class="btn btn-success">Novo Pedido</a>
-
-<table class="table">
-    <thead>
-        <tr>
-            <th>Cliente</th>
-            <th>Descrição</th>
-            <th>Valor</th>
-            <th>Data</th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>@item.NomeCliente</td>
-                <td>@item.Descricao</td>
-                <td>@item.Valor</td>
-                <td>@item.DataPedido.ToString("dd/MM/yyyy")</td>
-                <td>
-                    <a asp-action="Edit" asp-route-id="@item.Id">Editar</a> |
-                    <form asp-action="Delete" method="post" style="display:inline">
-                        @Html.AntiForgeryToken()
-                        <input type="hidden" name="id" value="@item.Id" />
-                        <button type="submit" class="btn btn-link">Excluir</button>
-                    </form>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+        <div class="card form-section">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Cliente</th>
+                        <th>Descrição</th>
+                        <th>Valor</th>
+                        <th>Data</th>
+                        <th class="text-end">Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@item.NomeCliente</td>
+                            <td>@item.Descricao</td>
+                            <td>@(item.Valor.HasValue? item.Valor.Value.ToString("C") : "-")</td>
+                            <td>@item.DataPedido.ToString("dd/MM/yyyy")</td>
+                            <td class="text-end">
+                                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary btn-sm me-2">Editar</a>
+                                <form asp-action="Delete" method="post" class="d-inline">
+                                    @Html.AntiForgeryToken()
+                                    <input type="hidden" name="id" value="@item.Id" />
+                                    <button type="submit" class="btn btn-danger btn-sm">Excluir</button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

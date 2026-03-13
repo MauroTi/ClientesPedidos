@@ -4,31 +4,40 @@
     ViewData["Title"] = "Novo Pedido";
 }
 
-<h2>Novo Pedido</h2>
+@section Styles {
+    <link rel="stylesheet" href="~/css/pages/clientes.css" />
+}
 
-<form asp-action="Create" method="post">
-    @Html.AntiForgeryToken()
+<div class="page-container">
 
-    <div class="form-group">
-        <label>Cliente</label>
-        <select asp-for="ClienteId" class="form-control"
-                asp-items="@(new SelectList(Model.Clientes, "Id", "Nome"))">
-            <option value="">Selecione</option>
-        </select>
-        <span asp-validation-for="ClienteId" class="text-danger"></span>
+    <h1 class="page-title">Novo Pedido</h1>
+
+    <div class="card form-section">
+
+        <h4>Cadastro de Pedido</h4>
+
+        <form asp-action="Create" method="post">
+            @Html.AntiForgeryToken()
+
+            <label>Cliente</label>
+            <select asp-for="ClienteId" class="form-control">
+                <option value="">Selecione</option>
+                @foreach (var cliente in Model.Clientes)
+                {
+                    <option value="@cliente.Id">@cliente.Nome</option>
+                }
+            </select>
+            <span asp-validation-for="ClienteId" class="text-danger"></span>
+
+            <label>Descrição</label>
+            <input asp-for="Descricao" class="form-control" />
+
+            <label>Valor</label>
+            <input asp-for="Valor" class="form-control" />
+
+            <button type="submit" class="btn-add">Salvar</button>
+        </form>
+
     </div>
 
-    <div class="form-group">
-        <label>Descrição</label>
-        <input asp-for="Descricao" class="form-control" />
-        <span asp-validation-for="Descricao" class="text-danger"></span>
-    </div>
-
-    <div class="form-group">
-        <label>Valor</label>
-        <input asp-for="Valor" class="form-control" />
-        <span asp-validation-for="Valor" class="text-danger"></span>
-    </div>
-
-    <button type="submit" class="btn btn-primary">Salvar</button>
-</form>
+</div>
