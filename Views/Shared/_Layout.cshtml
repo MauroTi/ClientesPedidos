@@ -5,22 +5,41 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - ClientesPedidos</title>
 
-    <!-- Bootstrap (opcional, pode remover se não usar) -->
+    <!-- Bootstrap (opcional) -->
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
 
     <!-- CSS GLOBAL -->
     <link rel="stylesheet" href="~/css/layout.css" />
     <link rel="stylesheet" href="~/css/components.css" />
 
-    <!-- CSS POR PÁGINA -->
-
-    <link rel="stylesheet" href="~/css/layout.css" />
-    <link rel="stylesheet" href="~/css/components.css" />
     @RenderSection("Styles", required: false)
-
 </head>
 
 <body>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/">ClientesPedidos</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/Clientes/Index">Clientes</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/Pedidos/Index">Pedidos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/Graficos/Index">Gráficos</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
 
     <div class="admin-wrapper">
 
@@ -28,7 +47,7 @@
         <aside class="sidebar">
             <div class="logo">
                 <h1 class="logo h1">
-                <a asp-controller="Home" asp-action="Index" class="logo-link">ClientesPedidos</a>
+                    <a asp-controller="Home" asp-action="Index" class="logo-link">ClientesPedidos</a>
                 </h1>
             </div>
 
@@ -37,7 +56,7 @@
                 <a asp-controller="Pedidos" asp-action="Index">Pedidos</a>
 
                 @if (!(ViewContext.RouteData.Values["controller"]?.ToString() == "Graficos" &&
-                                ViewContext.RouteData.Values["action"]?.ToString() == "Index"))
+                                                        ViewContext.RouteData.Values["action"]?.ToString() == "Index"))
                 {
                     <a asp-controller="Graficos" asp-action="Index">Gráficos</a>
                 }
